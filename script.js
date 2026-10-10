@@ -2,11 +2,15 @@ const menuBtn = document.getElementById("menuBtn");
 const navLinks = document.getElementById("navLinks");
 const scrollTopBtn = document.getElementById("scrollTop");
 const year = document.getElementById("year");
+const certificateModal = document.getElementById("certificateModal");
+const openCertificateBtn = document.getElementById("openCertificate");
+const closeCertificateBtn = document.getElementById("closeCertificate");
 
 year.textContent = new Date().getFullYear();
 
 menuBtn.addEventListener("click", () => {
   navLinks.classList.toggle("show");
+  menuBtn.setAttribute("aria-expanded", String(navLinks.classList.contains("show")));
   const icon = menuBtn.querySelector("i");
   icon.classList.toggle("fa-bars");
   icon.classList.toggle("fa-xmark");
@@ -15,6 +19,7 @@ menuBtn.addEventListener("click", () => {
 document.querySelectorAll(".nav-links a").forEach((link) => {
   link.addEventListener("click", () => {
     navLinks.classList.remove("show");
+    menuBtn.setAttribute("aria-expanded", "false");
     const icon = menuBtn.querySelector("i");
     icon.classList.add("fa-bars");
     icon.classList.remove("fa-xmark");
@@ -46,3 +51,23 @@ window.addEventListener("scroll", () => {
 scrollTopBtn.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
+
+if (certificateModal && openCertificateBtn && closeCertificateBtn) {
+  openCertificateBtn.addEventListener("click", () => {
+    certificateModal.showModal();
+    document.body.classList.add("modal-open");
+  });
+
+  closeCertificateBtn.addEventListener("click", () => {
+    certificateModal.close();
+  });
+
+  certificateModal.addEventListener("click", (event) => {
+    if (event.target === certificateModal) certificateModal.close();
+  });
+
+  certificateModal.addEventListener("close", () => {
+    document.body.classList.remove("modal-open");
+    openCertificateBtn.focus();
+  });
+}
